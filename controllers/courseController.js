@@ -192,7 +192,7 @@ export const getLessonDetail = async (req, res) => {
       curr_data = course.lessons;
     }
 
-    const lessonIndex = course.lessons.findIndex(
+    const lessonIndex = curr_data.findIndex(
       (lesson) => lesson.lessonNumber === lessonNumber
     );
 
@@ -208,10 +208,10 @@ export const getLessonDetail = async (req, res) => {
       course.lessons = string_data;
 
       await course.save(); // Ensure the updated course is saved to the database
-      const curr_data = JSON.parse(course.lessons);
-      course.lessons = curr_data;
+      // const curr_data = JSON.parse(course.lessons);
+      // course.lessons = curr_data;
 
-      await course.save();
+      // await course.save();
 
       res.status(200).json({ message: course });
     } else {
