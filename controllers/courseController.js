@@ -182,7 +182,15 @@ export const getLessonDetail = async (req, res) => {
     if (!course) {
       return res.status(404).json({ message: "Course not found" });
     }
-    const curr_data = course.lessons;
+    let curr_data;
+
+    try {
+      // Try to parse course.lessons as JSON
+      curr_data = JSON.parse(course.lessons);
+    } catch (e) {
+      // If parsing fails, assume course.lessons is already a JSON object
+      curr_data = course.lessons;
+    }
 
     const lessonIndex = course.lessons.findIndex(
       (lesson) => lesson.lessonNumber === lessonNumber
@@ -214,8 +222,6 @@ export const getLessonDetail = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
-
 
 export const searchCourses = async (req, res) => {
   try {

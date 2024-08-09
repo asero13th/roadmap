@@ -11,9 +11,9 @@ import {
 
 const router = express.Router();
 
-router.post("/", createCourse);
+router.post("/new", createCourse);
 router.get("/", getCourses);
-router.patch("/youtube", getLessonDetail);
+router.patch("/update", getLessonDetail);
 
 router.get("/search/:search", searchCourses);
 router.delete("/:id", deleteCourse);
