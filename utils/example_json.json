@@ -1,0 +1,44 @@
+{
+  "title": "Data Structures and Algorithms",
+  "description": "An in-depth course on data structures and algorithms, covering various topics essential for computer science and software engineering.",
+  "category": "Computer Science",
+  "lessons": [
+    {
+      "lessonNumber": 1,
+      "title": "Introduction to Data Structures",
+      "content": "This lesson provides an overview of data structures and their importance in computer science. We will discuss various types of data structures and their applications.",
+      "duration": 30,
+      "videoLink": "https://www.youtube.com/watch?v=video1",
+      "detailExplanation": ""
+    },
+    {
+      "lessonNumber": 2,
+      "title": "Arrays and Linked Lists",
+      "content": "In this lesson, we will explore arrays and linked lists. We will cover their structure, operations, advantages, and disadvantages.",
+      "duration": 45,
+      "videoLink": "https://www.youtube.com/watch?v=video2"
+    },
+    {
+      "lessonNumber": 3,
+      "title": "Stacks and Queues",
+      "content": "This lesson covers stacks and queues, including their operations, implementation, and use cases.",
+      "duration": 40,
+      "videoLink": "https://www.youtube.com/watch?v=video3"
+    },
+    {
+      "lessonNumber": 4,
+      "title": "Trees and Graphs",
+      "content": "We will dive into trees and graphs, discussing their types, traversal methods, and algorithms for searching and sorting.",
+      "duration": 60,
+      "videoLink": "https://www.youtube.com/watch?v=video4"
+    }
+  ],
+  "review": 0.0,
+  "resource": [
+    "https://www.geeksforgeeks.org/data-structures/",
+    "https://www.w3schools.com/dsa/dsa_intro.php"
+  ],
+
+  "createdAt": "2024-08-07T00:00:00Z",
+  "updatedAt": "2024-08-07T00:00:00Z"
+}
