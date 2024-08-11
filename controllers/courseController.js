@@ -58,8 +58,6 @@ export const createCourse = async (req, res) => {
     newCourse.createdAt = new Date();
     newCourse.updatedAt = new Date();
 
-   
-
     newCourse.lessons.forEach(async (lesson) => {
       await new Promise((resolve) => setTimeout(resolve, 2000)); // 2 second delay
 
@@ -92,7 +90,7 @@ export const createCourse = async (req, res) => {
 
       lesson.videoLink = video_Link;
     });
-    lesson.videoLink = "https://www.example.com"; // Replace with the desired video link
+    
 
     await newCourse.save();
     res.json({ data: jsonObject });
