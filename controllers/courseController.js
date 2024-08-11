@@ -203,10 +203,8 @@ export const getLessonDetail = async (req, res) => {
     }
     curr_data[lessonIndex].videoLink = video_Link;
 
-    const string_data = JSON.stringify(curr_data);
     if (lessonIndex !== -1) {
-      course.lessons = string_data;
-
+      course.lessons = curr_data;
       await course.save(); // Ensure the updated course is saved to the database
       // const curr_data = JSON.parse(course.lessons);
       // course.lessons = curr_data;
