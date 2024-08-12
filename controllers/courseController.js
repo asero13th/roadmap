@@ -90,7 +90,7 @@ export const createCourse = async (req, res) => {
 
       lesson.videoLink = video_Link;
     });
-    
+    // Replace with the desired video link
 
     await newCourse.save();
     res.json({ data: jsonObject });
@@ -182,33 +182,6 @@ export const getLessonDetail = async (req, res) => {
       });
     }
 
-    const query = `${title} ${topic} tutorial`;
-
-    const response = await youtube.search.list({
-      part: "snippet",
-      q: query,
-      maxResults: 5, // Adjust as needed
-      order: "viewCount",
-      type: "video",
-    });
-
-    if (!response || !response.data) {
-      console.error("Invalid response from YouTube API:", response);
-      return res
-        .status(500)
-        .json({ message: "Invalid response from YouTube API" });
-    }
-
-    const videos = response.data.items;
-
-    if (!videos) {
-      console.error("No videos found in response:", response.data);
-      return res.status(404).json({ message: "No videos found" });
-    }
-
-    const video_Link =
-      "https://www.youtube.com/watch?v=" + videos[0].id.videoId;
-
     const course = await courseModel.findOne({
       where: { course_id: id },
     });
@@ -216,40 +189,8 @@ export const getLessonDetail = async (req, res) => {
     if (!course) {
       return res.status(404).json({ message: "Course not found" });
     }
-    let curr_data;
 
-    try {
-      // Try to parse course.lessons as JSON
-      curr_data = JSON.parse(course.lessons);
-    } catch (e) {
-      // If parsing fails, assume course.lessons is already a JSON object
-      curr_data = course.lessons;
-    }
-
-    const lessonIndex = curr_data.findIndex(
-      (lesson) => lesson.lessonNumber === lessonNumber
-    );
-
-    if (curr_data[lessonIndex].videoLink === video_Link) {
-      return res
-        .status(200)
-        .json({ message: "Video link already exists", data: course });
-    }
-    curr_data[lessonIndex].videoLink = video_Link;
-
-    if (lessonIndex !== -1) {
-      course.lessons = curr_data;
-
-      await course.save(); // Ensure the updated course is saved to the database
-      // const curr_data = JSON.parse(course.lessons);
-      // course.lessons = curr_data;
-
-      // await course.save();
-
-      res.status(200).json({ message: course });
-    } else {
-      res.status(404).json({ message: "Lesson not found" });
-    }
+    res.status(200).json({ message: course });
   } catch (error) {
     console.error("Error searching videos:", error);
     res.status(500).json({ message: "Internal server error" });
