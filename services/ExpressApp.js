@@ -6,6 +6,7 @@ import roadmapRoutes from "../routes/roadmapRoutes.js";
 import userRoues from "../routes/userRoutes.js";
 import authRoutes from "../routes/authRoutes.js";
 import courseRoutes from "../routes/courseRoutes.js";
+import bookmarkRoutes from "../routes/bookmarkRoutes.js";
 import cors from "cors";
 
 export default async (app) => {
@@ -27,6 +28,7 @@ export default async (app) => {
   app.use("/api/user", userRoues);
   app.use("/api/auth", authRoutes);
   app.use("/api/course", courseRoutes);
+  app.use("/api/bookmark", bookmarkRoutes);
 
   return app;
 };
