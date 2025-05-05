@@ -259,12 +259,25 @@ export const getCoursesStatistics = async (req, res) => {
       totalLessons += course.lessons ? course.lessons.length : 0;
     });
     
+    // Calculate rating distribution
+    const ratingDistribution = {
+      5: 0, 4: 0, 3: 0, 2: 0, 1: 0, 0: 0
+    };
+    
+    courses.forEach(course => {
+      const rating = Math.round(parseFloat(course.review || 0));
+      if (rating >= 0 && rating <= 5) {
+        ratingDistribution[rating]++;
+      }
+    });
+    
     // Return statistics
     res.status(200).json({
       totalCourses,
       categoryCounts,
       averageReviewScore,
-      totalLessons
+      totalLessons,
+      ratingDistribution
     });
   } catch (error) {
     console.error("Error fetching course statistics:", error);

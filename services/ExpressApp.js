@@ -7,6 +7,7 @@ import userRoues from "../routes/userRoutes.js";
 import authRoutes from "../routes/authRoutes.js";
 import courseRoutes from "../routes/courseRoutes.js";
 import bookmarkRoutes from "../routes/bookmarkRoutes.js";
+import ratingRoutes from "../routes/ratingRoutes.js";
 import cors from "cors";
 
 export default async (app) => {
@@ -29,6 +30,7 @@ export default async (app) => {
   app.use("/api/auth", authRoutes);
   app.use("/api/course", courseRoutes);
   app.use("/api/bookmark", bookmarkRoutes);
+  app.use("/api/rating", ratingRoutes);
 
   return app;
 };

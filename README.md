@@ -10,6 +10,7 @@ This is a backend service built using Express.js that generates courses using Ge
 - Logging and error handling
 - Course statistics with metrics for total courses, categories, and average ratings
 - Course bookmarking functionality for users to save courses for later reference
+- Course rating system with detailed analytics and user reviews
 
 ## Tech Stack
 - Node.js
@@ -77,6 +78,13 @@ Make sure you have the following installed:
 - `DELETE /api/bookmark/:bookmark_id` - Remove a bookmark
 - `PATCH /api/bookmark/:bookmark_id/notes` - Update bookmark notes
 
+### Ratings
+- `POST /api/rating` - Rate a course (add or update rating)
+- `GET /api/rating/course/:course_id` - Get all ratings for a course
+- `GET /api/rating/user/:user_id` - Get all ratings by a user
+- `GET /api/rating/user/:user_id/course/:course_id` - Get a user's rating for a specific course
+- `DELETE /api/rating/:rating_id` - Delete a rating
+
 ### User Management
 - `GET /api/user/:id` - Retrieve user profile
 - `PUT /api/user/:id` - Update user profile
@@ -89,14 +97,17 @@ backend/
 │   │   ├── authRoutes.js
 │   │   ├── courseRoutes.js
 │   │   ├── bookmarkRoutes.js
+│   │   ├── ratingRoutes.js
 │   ├── controllers/
 │   │   ├── authController.js
 │   │   ├── courseController.js
 │   │   ├── bookmarkController.js
+│   │   ├── ratingController.js
 │   ├── models/
 │   │   ├── User.js
 │   │   ├── Course.js
 │   │   ├── Bookmark.js
+│   │   ├── Rating.js
 │   ├── middleware/
 │   │   ├── authMiddleware.js
 │   ├── config/
