@@ -1,4 +1,6 @@
-const blackList = new Set();
+import exp from "constants";
+
+export const blackList = new Set();
 
 export const tokenBlackList = {
   addToTokenBlackList: (token) => {

@@ -1,33 +1,23 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../services/Database.js";
-
-const Course = sequelize.define("Course", {
+import Lesson from "./lessonModel.js";
+const LessonVideo = sequelize.define("LessonVideos", {
   id: {
     type: DataTypes.STRING,
+    allowNull: false,
     primaryKey: true,
   },
-
-  title: {
+  lesson_id: {
     type: DataTypes.STRING,
+    references: {
+      model: Lesson,
+      key: "id",
+    },
   },
-
-  description: {
+  videoLink: {
     type: DataTypes.STRING,
+    allowNull: false,
   },
-
-  thumbnail: {
-    type: DataTypes.STRING,
-  },
-  category: {
-    type: DataTypes.STRING,
-  },
-  duration: {
-    type: DataTypes.INTEGER,
-  },
-  courseColor: {
-    type: DataTypes.STRING,
-  },
-
   createdAt: {
     type: DataTypes.DATE,
     defaultValue: DataTypes.NOW,
@@ -39,4 +29,4 @@ const Course = sequelize.define("Course", {
   },
 });
 
-export default Course;
+export default LessonVideo;

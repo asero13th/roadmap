@@ -1,42 +1,30 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../services/Database.js";
 
-const Course = sequelize.define("Course", {
+const Category = sequelize.define("Category", {
   id: {
     type: DataTypes.STRING,
     primaryKey: true,
+    allowNull: false,
   },
-
-  title: {
+  name: {
     type: DataTypes.STRING,
+    allowNull: false,
   },
-
   description: {
     type: DataTypes.STRING,
+    allowNull: false,
   },
-
-  thumbnail: {
-    type: DataTypes.STRING,
-  },
-  category: {
-    type: DataTypes.STRING,
-  },
-  duration: {
-    type: DataTypes.INTEGER,
-  },
-  courseColor: {
-    type: DataTypes.STRING,
-  },
-
   createdAt: {
     type: DataTypes.DATE,
+    allowNull: false,
     defaultValue: DataTypes.NOW,
   },
-
   updatedAt: {
     type: DataTypes.DATE,
+    allowNull: false,
     defaultValue: DataTypes.NOW,
   },
 });
 
-export default Course;
+export default Category;

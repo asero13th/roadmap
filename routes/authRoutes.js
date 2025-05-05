@@ -3,12 +3,15 @@ import {
   userRegister,
   loginUser,
   logoutUser,
+  verifyOTP,
+  sendOtp,
 } from "../controllers/authControllers.js";
 
-const router = express.Router();
+
 
 // You had two routes for "/login". I removed the first one since it was just sending "Login" as a response.
 // The second route for "/login" uses the `loginUser` controller, which is what you want.
+const router = expres.Router();
 
 router.post("/register", userRegister); // Route for user registration
 router.post("/login", loginUser); // Route for user login

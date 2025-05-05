@@ -19,6 +19,7 @@
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/multer": "^1.4.7",
+    "@types/nodemailer": "^6.4.15",
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
@@ -26,6 +27,7 @@
     "class-validator": "^0.14.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "google-auth-library": "^9.13.0",
@@ -37,6 +39,7 @@
     "nodemon": "^3.1.2",
     "sequelize": "^6.37.3",
     "ts-node-dev": "^2.0.0",
+    "uuid": "^10.0.0",
     "youtube-search-api": "^1.2.2"
   },
   "devDependencies": {

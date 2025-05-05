@@ -1,40 +1,33 @@
 import { DataTypes } from "sequelize";
-import { sequelize } from "../services/Database.js";
-import Course from "./courseModel.js";
-
-const Lesson = sequelize.define("Lesson", {
+import { sequelize } from "../services/Database";
+import Course from "./courseModel";
+import User from "./userModel";
+const Review = sequelize.define("Review", {
   id: {
     type: DataTypes.STRING,
     primaryKey: true,
     allowNull: false,
   },
+  user_id: {
+    type: DataTypes.STRING,
+    references: {
+      model: User,
+      key: "id",
+    },
+  },
   course_id: {
     type: DataTypes.STRING,
     references: {
       model: Course,
-      key: "course_id",
+      key: "id",
     },
   },
-  title: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-  },
-  introduction: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  content: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-  },
-
-  conclusion: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-  },
-
-  lessonOrder: {
+  rating: {
     type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  review: {
+    type: DataTypes.STRING,
     allowNull: false,
   },
   createdAt: {
@@ -49,4 +42,4 @@ const Lesson = sequelize.define("Lesson", {
   },
 });
 
-export default Lesson;
+export default Review;

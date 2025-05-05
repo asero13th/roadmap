@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: Aser123456789A!
+      MYSQL_DATABASE: skillroadmap
+    volumes:
+      - db-data:/var/lib/mysql
+    expose:
+      - "3306"
+
+  backend:
+    build: .
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+    command: ["./wait-for-it.sh", "db:3306", "--", "npm", "start"]
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+
+volumes:
+  db-data:
