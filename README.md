@@ -1,3 +1,4 @@
+
 # Course Generator Backend
 
 This is a backend service built using Express.js that generates courses using Generative AI. The backend provides endpoints to generate course content dynamically based on user input and serves it through a REST API.
@@ -10,19 +11,19 @@ This is a backend service built using Express.js that generates courses using Ge
 - Logging and error handling
 
 ## Tech Stack
-- Node.js
-- Express.js
-- Gemini API (or any other AI model for course generation)
-- PostgreSQL (or any preferred database)
-- JWT Authentication
-- CORS Middleware
+- **Node.js**: JavaScript runtime (>= 14.x)
+- **Express.js**: Web framework for building the REST API
+- **Generative AI**: Gemini API or OpenAI API for course generation
+- **Database**: PostgreSQL (recommended) or MongoDB
+- **JWT Authentication**: Secure user authentication
+- **CORS Middleware**: Enable cross-origin requests
 
 ## Installation
 ### Prerequisites
 Make sure you have the following installed:
 - Node.js (>= 14.x)
 - npm or yarn
-- MongoDB/PostgreSQL (if using a database)
+- Database (PostgreSQL or MongoDB)
 
 ### Steps
 1. Clone the repository:
@@ -34,7 +35,10 @@ Make sure you have the following installed:
    ```sh
    npm install
    ```
-3. Set up environment variables:
+3. Set up the database:
+   - For **PostgreSQL**: Install PostgreSQL, create a database, and note the connection string (e.g., `postgresql://user:password@localhost:5432/dbname`).
+   - For **MongoDB**: Install MongoDB, start the MongoDB server, and note the connection string (e.g., `mongodb://localhost:27017/dbname`).
+4. Set up environment variables:
    Create a `.env` file in the root directory and configure the following:
    ```env
    PORT=5000
@@ -42,7 +46,7 @@ Make sure you have the following installed:
    OPENAI_API_KEY=your_openai_api_key
    JWT_SECRET=your_jwt_secret
    ```
-4. Run the server:
+5. Run the server:
    ```sh
    npm start
    ```
@@ -88,6 +92,18 @@ backend/
 │── README.md
 ```
 
+## Testing
+- Unit tests are written using Jest and Supertest.
+- Run tests with:
+  ```sh
+  npm test
+  ```
+- Ensure all tests pass before submitting a pull request.
+- Test coverage reports can be generated with:
+  ```sh
+  npm run test:coverage
+  ```
+
 ## Deployment
 ### Deploy on Heroku (Example)
 1. Login to Heroku:
@@ -109,13 +125,21 @@ backend/
    git push heroku main
    ```
 
+## Troubleshooting
+- **Database Connection Issues**: Verify the `DATABASE_URL` in your `.env` file matches your database setup. Ensure the database server is running.
+- **API Key Errors**: Confirm that `OPENAI_API_KEY` is valid and has sufficient credits.
+- **Port Conflicts**: If port 5000 is in use, update the `PORT` in your `.env` file.
+- **CORS Errors**: Ensure the frontend URL is allowed in the CORS middleware configuration.
+
 ## Contributing
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature-name`)
-3. Commit changes (`git commit -m 'Add feature'`)
-4. Push to the branch (`git push origin feature-name`)
-5. Open a pull request
+1. Fork the repository.
+2. Create a feature branch (`git checkout -b feature-name`).
+3. Commit changes (`git commit -m 'Add feature'`).
+4. Push to the branch (`git push origin feature-name`).
+5. Open a pull request.
+6. Report issues or suggest features by creating a new issue in the repository.
 
 ## License
 This project is licensed under the MIT License.
+
 
