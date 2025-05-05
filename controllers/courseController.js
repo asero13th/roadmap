@@ -1,101 +1,52 @@
-import example_response from "../utils/example_json.json" assert { type: "json" };
+import lessons from "../utils/lesson.json" assert { type: "json" };
+import courseData from "../utils/courseData.json" assert { type: "json" };
 import dotenv from "dotenv";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import courseModel from "../models/courseModel.js";
-import { google } from "googleapis";
+import lessonModel from "../models/lessonModel.js";
+
 import { Op } from "sequelize";
+import pkg from "body-parser";
+const { json } = pkg;
+import { v4 as uuidv4 } from "uuid";
 // const youtube = google.youtube('v3');
 
 dotenv.config();
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-const youtubeApiKey = process.env.YOUTUBE_API_KEY;
-
-const youtube = google.youtube({
-  version: "v3",
-  auth: youtubeApiKey,
-});
-
 export const createCourse = async (req, res) => {
   try {
-    const { skill } = req.body;
-    const exampleResponseString = JSON.stringify(example_response, null, 2);
+    const { topic } = req.body;
 
-    const base_prompt =
-      "Generate a detailed learning roadmap for mastering " + skill;
+    const base_prompt = `Generate a JSON object for an online course on ${topic}. The JSON should include only three fields: title, description, and category. The title should be a concise and relevant course name, the description should provide a brief overview of what the course covers, and the category should specify the general subject area of the course. The JSON should look like this \n ${JSON.stringify(
+      courseData
+    )}`;
 
-    const prompt_with_example =
-      "IMPORTANT: the output should be a json format. \nexample out put:" +
-      exampleResponseString +
-      "\nNOTE: do not include escaping charachters";
-
-    const prompt = base_prompt + prompt_with_example;
-
+    const important = `IMPORTANT: The output should be a plain text string in JSON format without any additional text or formatting.`;
+    const prompt = `${base_prompt} ${important}`;
     const result = await model.generateContent(prompt);
-    const response = result.response;
+    const response = await result.response;
     const text = response.text();
+    const jsondata = JSON.parse(text);
 
-    const cleanedJsonString = text.replace(/\\n|\\\"|\\|```json/g, (match) => {
-      if (match === '\\"') return '"';
-      return "";
+    const newCourse = await courseModel.create({
+      title: jsondata.title,
+      description: jsondata.description,
+      category: jsondata.category,
+      id: uuidv4(),
+      creadAt: Date.now(),
+      updatedAt: Date.now(),
     });
 
-    const jsonObject = JSON.parse(cleanedJsonString);
-    const newCourse = new courseModel();
-
-    newCourse.title = jsonObject.title ? jsonObject.title : "No title";
-    newCourse.description = jsonObject.description
-      ? jsonObject.description
-      : "No description";
-    newCourse.category = jsonObject.category
-      ? jsonObject.category
-      : "No category";
-    newCourse.lessons = jsonObject.lessons ? jsonObject.lessons : [];
-    newCourse.course_color = "0XFF3D5CFF";
-    newCourse.review = jsonObject.review ? jsonObject.review : 0.0;
-    newCourse.resource = jsonObject.resource ? jsonObject.resource : [];
-    newCourse.createdAt = new Date();
-    newCourse.updatedAt = new Date();
-
-    newCourse.lessons.forEach(async (lesson) => {
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // 2 second delay
-
-      const query = `${lesson.title} ${lesson.topic} tutorial`;
-
-      const response = await youtube.search.list({
-        part: "snippet",
-        q: query,
-        maxResults: 5, // Adjust as needed
-        order: "viewCount",
-        type: "video",
-      });
-
-      if (!response || !response.data) {
-        console.error("Invalid response from YouTube API:", response);
-        return res
-          .status(500)
-          .json({ message: "Invalid response from YouTube API" });
-      }
-
-      const videos = response.data.items;
-
-      if (!videos) {
-        console.error("No videos found in response:", response.data);
-        return res.status(404).json({ message: "No videos found" });
-      }
-
-      const video_Link =
-        "https://www.youtube.com/watch?v=" + videos[0].id.videoId;
-
-      lesson.videoLink = video_Link;
+    res.status(200).json({
+      message: "Course created succefully",
+      status: true,
+      data: newCourse,
     });
-    // Replace with the desired video link
-
-    await newCourse.save();
-    res.json({ data: jsonObject });
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    console.error("Error creating course:", error);
+    res.status(404).json({ message: error });
   }
 };
 
@@ -122,15 +73,7 @@ export const deleteCourse = async (req, res) => {
 export const updateCourse = async (req, res) => {
   try {
     const { id } = req.params;
-    const {
-      title,
-      description,
-      category,
-      course_color,
-      review,
-      lessons,
-      resource,
-    } = req.body;
+    const { title, description, category, courseColor } = req.body;
     const course = await courseModel.findOne({ where: { course_id: id } });
 
     if (title) {
@@ -142,17 +85,8 @@ export const updateCourse = async (req, res) => {
     if (category) {
       course.category = category;
     }
-    if (course_color) {
-      course.course_color = course_color;
-    }
-    if (review) {
-      course.review = review;
-    }
-    if (lessons) {
-      course.lessons = lessons;
-    }
-    if (resource) {
-      course.resource = resource;
+    if (courseColor) {
+      course.courseColor = courseColor;
     }
 
     await course.save();
@@ -165,35 +99,25 @@ export const updateCourse = async (req, res) => {
 export const getCourseById = async (req, res) => {
   try {
     const { id } = req.params;
-    const course = await courseModel.findOne({ where: { course_id: id } });
+    const course = await courseModel.findOne({ where: { id } });
     res.status(200).json(course);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
 };
 
-export const getLessonDetail = async (req, res) => {
+export const getLessonsByCourseId = async (req, res) => {
+  const { course_id } = req.params;
+
   try {
-    const { title, topic, lessonNumber, id } = req.body;
-
-    if (!title || !topic || !lessonNumber || !id) {
-      return res.status(400).json({
-        message: "Title, topic, lessonNumber, and course_id are required",
-      });
-    }
-
-    const course = await courseModel.findOne({
-      where: { course_id: id },
+    const lessons = await lessonModel.findAll({ where: { course_id } });
+    res.status(200).json({
+      message: "Lessons fetched successfully",
+      sucess: true,
+      data: lessons,
     });
-
-    if (!course) {
-      return res.status(404).json({ message: "Course not found" });
-    }
-
-    res.status(200).json({ message: course });
   } catch (error) {
-    console.error("Error searching videos:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(404).json({ message: error.message });
   }
 };
 
@@ -213,7 +137,7 @@ export const searchCourses = async (req, res) => {
       },
     }));
 
-    const courses = await courseModel.findAll({
+    const courses  = await courseModel.findAll({
       where: {
         [Op.and]: searchConditions,
       },

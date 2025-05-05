@@ -1,4 +1,4 @@
-import example_response from "../utils/example_json.json" assert { type: "json" };
+import lesson from "../utils/lesson.json" assert { type: "json" };
 import dotenv from "dotenv";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
@@ -17,7 +17,7 @@ export const getRoadmap = async (req, res) => {
 export const createRoadmap = async (req, res) => {
   try {
     const { skill } = req.body;
-    const exampleResponseString = JSON.stringify(example_response, null, 2);
+    const exampleResponseString = JSON.stringify(lesson, null, 2);
 
     const base_prompt =
       "Generate a detailed learning roadmap for mastering " +

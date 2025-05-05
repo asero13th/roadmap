@@ -8,6 +8,7 @@ export const sequelize = new Sequelize(
   process.env.DB_PASS,
   {
     host: process.env.DB_HOST,
+    port: process.env.DB_PORT || 3306, // Default to 3306 if DB_PORT is not set
     dialect: "mysql",
     logging: false, // disable logging; default: console.log
   }

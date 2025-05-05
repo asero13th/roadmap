@@ -6,7 +6,10 @@ import roadmapRoutes from "../routes/roadmapRoutes.js";
 import userRoues from "../routes/userRoutes.js";
 import authRoutes from "../routes/authRoutes.js";
 import courseRoutes from "../routes/courseRoutes.js";
+import lessonRoutes from "../routes/lessonRoutes.js";
+import resourceRoutes from "../routes/resourceRoutes.js";
 import cors from "cors";
+import authMiddleware from "../middleware/authMiddleaware.js";
 
 export default async (app) => {
   app.use(bodyParser.json());
@@ -22,11 +25,11 @@ export default async (app) => {
   );
 
   //   app.use("/images", express.static(path.join(__dirname, "images")));
-
-  app.use("/api/roadmap", roadmapRoutes);
-  app.use("/api/user", userRoues);
   app.use("/api/auth", authRoutes);
-  app.use("/api/course", courseRoutes);
+  app.use("/api/user", authMiddleware, userRoues);
+  app.use("/api/course", authMiddleware, courseRoutes);
+  app.use("/api/lesson", authMiddleware, lessonRoutes);
+  app.use("/api/resource", authMiddleware, resourceRoutes);
 
   return app;
 };
