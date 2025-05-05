@@ -225,3 +225,49 @@ export const searchCourses = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+// New function for course statistics
+export const getCoursesStatistics = async (req, res) => {
+  try {
+    // Get all courses
+    const courses = await courseModel.findAll();
+    
+    // Calculate total number of courses
+    const totalCourses = courses.length;
+    
+    // Calculate courses per category
+    const categoryCounts = {};
+    courses.forEach(course => {
+      const category = course.category;
+      if (categoryCounts[category]) {
+        categoryCounts[category]++;
+      } else {
+        categoryCounts[category] = 1;
+      }
+    });
+    
+    // Calculate average review score
+    let totalReviews = 0;
+    courses.forEach(course => {
+      totalReviews += parseFloat(course.review || 0);
+    });
+    const averageReviewScore = totalCourses > 0 ? (totalReviews / totalCourses).toFixed(1) : 0;
+    
+    // Calculate total lessons across all courses
+    let totalLessons = 0;
+    courses.forEach(course => {
+      totalLessons += course.lessons ? course.lessons.length : 0;
+    });
+    
+    // Return statistics
+    res.status(200).json({
+      totalCourses,
+      categoryCounts,
+      averageReviewScore,
+      totalLessons
+    });
+  } catch (error) {
+    console.error("Error fetching course statistics:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

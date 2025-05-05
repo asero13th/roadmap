@@ -7,6 +7,7 @@ import {
   updateCourse,
   getCourseById,
   searchCourses,
+  getCoursesStatistics,
 } from "../controllers/courseController.js";
 
 const router = express.Router();
@@ -14,6 +15,7 @@ const router = express.Router();
 router.post("/new", createCourse);
 router.get("/", getCourses);
 router.patch("/update", getLessonDetail);
+router.get("/statistics", getCoursesStatistics);
 
 router.get("/search/:search", searchCourses);
 router.delete("/:id", deleteCourse);
